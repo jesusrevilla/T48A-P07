@@ -6,39 +6,39 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 
 def linear_regresion():
-    
+
 # Cargar el dataset
 diabetes = load_diabetes()
 X = diabetes.data[:, [2]]  # Seleccionamos solo la característica BMI (índice 2)
 y = diabetes.target
 
 # Dividir en entrenamiento y prueba
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Entrenar el modelo
 model = LinearRegression()
 model.fit(X_train, y_train)
 
-# Predecir
+# Realizar predicciones
 y_pred = model.predict(X_test)
 
-# Calcular el error cuadrático medio
+# Calcular métricas
 mse = mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
-print(f"Error cuadrático medio (MSE): {mse:.2f}")
 
-# Obtenemos los resultados
+# Devolver resultados como tupla
 resultado = (mse, r2)
-print(f"Coeficiente de determinación (R2): {r2:.2f}")
+print(f"Error cuadrático medio (MSE): {mse:.2f}")
+print(f"Coeficiente de determinación (R²): {r2:.2f}")
 print(f"Tupla final: {resultado}")
 
-# Visualización: valores reales vs predichos
+# Visualización
 fig = px.scatter(
     x=y_test, y=y_pred,
     labels={'x': 'Valores Reales', 'y': 'Valores Predichos'},
     title='Regresión Lineal con una sola característica (BMI)'
 )
-
-# Línea de predicción ideal
 fig.add_scatter(x=y_test, y=y_test, mode='lines', name='Línea Ideal')
 fig.show()
