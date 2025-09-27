@@ -1,2 +1,46 @@
 def linear_regresion():
-    pass
+# Instalar plotly si no está instalado
+!pip install plotly -q
+
+import numpy as np
+import plotly.express as px
+from sklearn.datasets import load_diabetes
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+
+# Cargar el dataset
+diabetes = load_diabetes()
+X = diabetes.data[:, [2]]  # Seleccionamos solo la característica BMI (índice 2)
+y = diabetes.target
+
+# Dividir en entrenamiento y prueba
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Entrenar el modelo
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Predecir
+y_pred = model.predict(X_test)
+
+# Calcular el error cuadrático medio
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+print(f"Error cuadrático medio (MSE): {mse:.2f}")
+
+# Obtenemos los resultados
+resultado = (mse, r2)
+print(f"Coeficiente de determinación (R2): {r2:.2f}")
+print(f"Tupla final: {resultado}")
+
+# Visualización: valores reales vs predichos
+fig = px.scatter(
+    x=y_test, y=y_pred,
+    labels={'x': 'Valores Reales', 'y': 'Valores Predichos'},
+    title='Regresión Lineal con una sola característica (BMI)'
+)
+
+# Línea de predicción ideal
+fig.add_scatter(x=y_test, y=y_test, mode='lines', name='Línea Ideal')
+fig.show()
