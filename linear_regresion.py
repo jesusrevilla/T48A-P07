@@ -1,7 +1,3 @@
-def linear_regresion():
-# Instalar plotly si no está instalado
-!pip install plotly -q
-
 import numpy as np
 import plotly.express as px
 from sklearn.datasets import load_diabetes
@@ -9,6 +5,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 
+def linear_regresion():
+    
 # Cargar el dataset
 diabetes = load_diabetes()
 X = diabetes.data[:, [2]]  # Seleccionamos solo la característica BMI (índice 2)
