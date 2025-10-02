@@ -1,44 +1,39 @@
 import numpy as np
-import plotly.express as px
-from sklearn.datasets import load_diabetes
 from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
+from sklearn import datasets
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
 
 def linear_regresion():
+    pass
+    # Cargar el dataset
+    diabetes = datasets.load_diabetes()
+    X = diabetes.data
+    y = diabetes.target
 
-# Cargar el dataset
-diabetes = load_diabetes()
-X = diabetes.data[:, [2]]  # Seleccionamos solo la característica BMI (índice 2)
-y = diabetes.target
+    # Seleccionamos solo la característica BMI (índice 2)
+    X = X[:, np.newaxis, 2]
 
-# Dividir en entrenamiento y prueba
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
+    # Dividir en entrenamiento y prueba
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
 
-# Entrenar el modelo
-model = LinearRegression()
-model.fit(X_train, y_train)
+    # Entrenar el modelo
+    model = LinearRegression()
+    model.fit(X_train, y_train)
 
-# Realizar predicciones
-y_pred = model.predict(X_test)
+    # Realizar predicciones
+    y_pred = model.predict(X_test)
 
-# Calcular métricas
-mse = mean_squared_error(y_test, y_pred)
-r2 = r2_score(y_test, y_pred)
+    # Calcular métricas
+    mse = mean_squared_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
 
-# Devolver resultados como tupla
-resultado = (mse, r2)
-print(f"Error cuadrático medio (MSE): {mse:.2f}")
-print(f"Coeficiente de determinación (R²): {r2:.2f}")
-print(f"Tupla final: {resultado}")
+    # Devolver resultados 
+    return round(mse, 2), round(r2, 2)
 
-# Visualización
-fig = px.scatter(
-    x=y_test, y=y_pred,
-    labels={'x': 'Valores Reales', 'y': 'Valores Predichos'},
-    title='Regresión Lineal con una sola característica (BMI)'
-)
-fig.add_scatter(x=y_test, y=y_test, mode='lines', name='Línea Ideal')
-fig.show()
+# Uso de la función
+mse, r2 = linear_regresion()
+print("Error cuadrático medio (MSE):", mse)
+print("Coeficiente de determinación (R²):", r2)
